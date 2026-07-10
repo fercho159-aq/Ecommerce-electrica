@@ -29,68 +29,60 @@ export default function HomePage() {
       </div>
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-dark via-dark-800 to-dark overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-brand rounded-full blur-[120px]" />
-          <div className="absolute bottom-10 left-10 w-72 h-72 bg-brand-light rounded-full blur-[100px]" />
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/productos/tuberia-3.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-dark via-dark/90 to-dark/40" />
         </div>
         <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="mb-6">
-                <img src="/logo.png" alt="Eléctrica San Miguel" className="h-16 w-auto" />
-              </div>
-              <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-xs font-semibold rounded-full mb-4 border border-brand/20">
-                50 años de experiencia
-              </span>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight">
-                Tu proveedor de
-                <span className="text-brand"> material eléctrico</span> de confianza
-              </h1>
-              <p className="mt-4 text-gray-400 text-lg max-w-lg">
-                Más de 25,000 productos de las mejores marcas. Envíos a toda la República, atención personalizada y precios de distribuidor.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-8">
-                <Link
-                  href="/productos"
-                  className="px-6 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center gap-2"
-                >
-                  Ver catálogo
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <a
-                  href="https://wa.me/5255372496222?text=Hola,%20quiero%20cotizar%20material%20eléctrico"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/10"
-                >
-                  Solicitar cotización
-                </a>
-              </div>
-              {/* Trust counters */}
-              <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/10">
-                {[
-                  { value: "25,000+", label: "Productos" },
-                  { value: "50+", label: "Años" },
-                  { value: "2", label: "Sucursales CDMX" },
-                  { value: "500+", label: "Clientes activos" },
-                ].map((s) => (
-                  <div key={s.label}>
-                    <div className="text-xl font-bold text-white">{s.value}</div>
-                    <div className="text-xs text-gray-500">{s.label}</div>
-                  </div>
-                ))}
-              </div>
+          <div className="max-w-2xl">
+            <div className="mb-6">
+              <img src="/logo.png" alt="Eléctrica San Miguel" className="h-16 w-auto" />
             </div>
-            <div className="hidden lg:flex items-center justify-center">
-              <div className="relative">
-                <div className="absolute -inset-8 bg-brand/10 rounded-full blur-3xl" />
-                <img
-                  src="/productos/cable-2.jpg"
-                  alt="Cable eléctrico de cobre"
-                  className="relative w-80 h-80 object-contain drop-shadow-2xl"
-                />
-              </div>
+            <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-xs font-semibold rounded-full mb-4 border border-brand/20 backdrop-blur-sm">
+              50 años de experiencia
+            </span>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight">
+              Tu proveedor de
+              <span className="text-brand"> material eléctrico</span> de confianza
+            </h1>
+            <p className="mt-4 text-gray-300 text-lg max-w-lg">
+              Más de 25,000 productos de las mejores marcas. Envíos a toda la República, atención personalizada y precios de distribuidor.
+            </p>
+            <div className="flex flex-wrap gap-3 mt-8">
+              <Link
+                href="/productos"
+                className="px-6 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center gap-2"
+              >
+                Ver catálogo
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <a
+                href="https://wa.me/5255372496222?text=Hola,%20quiero%20cotizar%20material%20eléctrico"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/10 backdrop-blur-sm"
+              >
+                Solicitar cotización
+              </a>
+            </div>
+            {/* Trust counters */}
+            <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/10">
+              {[
+                { value: "25,000+", label: "Productos" },
+                { value: "50+", label: "Años" },
+                { value: "2", label: "Sucursales CDMX" },
+                { value: "500+", label: "Clientes activos" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="text-xl font-bold text-white">{s.value}</div>
+                  <div className="text-xs text-gray-400">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
