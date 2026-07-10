@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #E30613;
+  --color-brand-dark: #B8050F;
+  --color-brand-light: #FF1A2A;
+  --color-brand-50: #FEF2F2;
+  --color-brand-100: #FDE6E6;
+  --color-dark: #0A0A0F;
+  --color-dark-800: #1A1A2E;
+  --color-dark-700: #2A2A3E;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #F1F3F5;
+  --color-gray-200: #E9ECEF;
+  --color-gray-300: #DEE2E6;
+  --color-gray-400: #ADB5BD;
+  --color-gray-500: #6C757D;
+  --color-gray-600: #495057;
+  --color-gray-700: #343A40;
+  --color-green: #10B981;
+  --color-orange: #F59E0B;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+}
