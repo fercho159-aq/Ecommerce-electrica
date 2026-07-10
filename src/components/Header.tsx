@@ -55,13 +55,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 bg-brand rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
-            <div className="hidden sm:block leading-tight">
-              <div className="font-bold text-dark text-sm tracking-tight">Eléctrica</div>
-              <div className="text-brand font-extrabold text-sm tracking-tight -mt-0.5">San Miguel</div>
-            </div>
+            <img src="/logo.png" alt="Eléctrica San Miguel" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop nav */}

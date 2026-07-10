@@ -53,8 +53,12 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image */}
-        <div className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative">
-          <Zap className="w-32 h-32 text-gray-200" />
+        <div className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative overflow-hidden">
+          {product.images[0] && product.images[0].startsWith("/productos/") ? (
+            <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain p-8" />
+          ) : (
+            <Zap className="w-32 h-32 text-gray-200" />
+          )}
           {discount > 0 && (
             <span className="absolute top-4 left-4 px-3 py-1 bg-brand text-white text-sm font-bold rounded-lg">
               -{discount}%

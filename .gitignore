@@ -35,3 +35,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# documentos internos y scripts temporales
+/documentos/
+/e-commerce/
+/catalogo/
+extract-images.mjs
+take-screenshots.mjs

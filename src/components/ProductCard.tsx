@@ -30,8 +30,12 @@ export default function ProductCard({ product }: { product: Product }) {
       className="group bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col"
     >
       {/* Image area */}
-      <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-6">
-        <Zap className="w-16 h-16 text-gray-200 group-hover:text-brand/20 transition-colors" />
+      <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-6 overflow-hidden">
+        {product.images[0] && product.images[0].startsWith("/productos/") ? (
+          <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
+        ) : (
+          <Zap className="w-16 h-16 text-gray-200 group-hover:text-brand/20 transition-colors" />
+        )}
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {discount > 0 && (

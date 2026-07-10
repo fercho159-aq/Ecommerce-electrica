@@ -18,6 +18,16 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Promotional Banner */}
+      <div className="bg-brand text-white text-center py-2.5 px-4">
+        <p className="text-sm font-semibold">
+          Aprovecha nuestras ofertas de temporada — Hasta 20% de descuento en cables y conductores
+          <Link href="/productos?cat=cables-conductores" className="ml-2 underline underline-offset-2 font-bold hover:text-white/80">
+            Comprar ahora
+          </Link>
+        </p>
+      </div>
+
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-dark via-dark-800 to-dark overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -26,6 +36,9 @@ export default function HomePage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative">
           <div className="max-w-2xl">
+            <div className="mb-6">
+              <img src="/logo.png" alt="Eléctrica San Miguel" className="h-16 w-auto" />
+            </div>
             <span className="inline-block px-3 py-1 bg-brand/10 text-brand text-xs font-semibold rounded-full mb-4 border border-brand/20">
               50 años de experiencia
             </span>

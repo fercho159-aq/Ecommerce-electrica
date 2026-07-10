@@ -37,10 +37,10 @@ export const categories: Category[] = [
 export const products: Product[] = [
   // --- CABLES Y CONDUCTORES ---
   {
-    id: "p1", name: "Cable THW 12 AWG", slug: "cable-thw-12-awg",
-    description: "Cable de cobre suave con aislamiento termoplástico THW, ideal para instalaciones residenciales y comerciales. Resistente a la humedad y temperaturas de hasta 75°C. Cumple con norma NOM-063-SCFI.",
-    price: 849, comparePrice: 999, category: "cables-conductores", subcategory: "thw", brand: "Condumex", sku: "CDX-THW12-100",
-    stock: 150, images: ["/productos/cable-thw-12.jpg"], specs: { "Calibre": "12 AWG", "Material": "Cobre suave", "Aislamiento": "PVC/THW", "Longitud": "100 m", "Color": "Negro", "Norma": "NOM-063-SCFI" }, featured: true
+    id: "p1", name: "Cable de Cobre Desnudo Kobrex", slug: "cable-cobre-desnudo-kobrex",
+    description: "Alambre y cable concéntrico de cobre electrolítico 99.9% de pureza. Disponible en temple duro, semiduro y suave. Alta conductividad eléctrica, resistencia a la tracción y fácil de soldar. Ideal para puesta a tierra y líneas aéreas de distribución.",
+    price: 1850, comparePrice: 2200, category: "cables-conductores", subcategory: "cobre-desnudo", brand: "Kobrex", sku: "KBX-CU12-100",
+    stock: 75, images: ["/productos/cable-3.jpg"], specs: { "Calibre": "12 AWG", "Material": "Cobre electrolítico 99.9%", "Temple": "Suave", "Longitud": "100 m", "Norma": "NOM-063-SCFI", "Aplicación": "Puesta a tierra" }, featured: true
   },
   {
     id: "p2", name: "Cable THW 10 AWG", slug: "cable-thw-10-awg",
@@ -87,10 +87,10 @@ export const products: Product[] = [
 
   // --- ILUMINACIÓN ---
   {
-    id: "p9", name: "Panel LED 60x60 40W", slug: "panel-led-60x60-40w",
-    description: "Panel LED de empotrar para plafón, luz blanca 6500K. Ideal para oficinas, comercios y hospitales. Driver integrado, larga vida útil de 50,000 horas.",
-    price: 389, comparePrice: 520, category: "iluminacion", subcategory: "paneles", brand: "Tecnolite", sku: "TEC-PNL6060-40",
-    stock: 120, images: ["/productos/panel-led-60x60.jpg"], specs: { "Potencia": "40W", "Lumens": "3600 lm", "Temp. Color": "6500K", "Medidas": "60x60 cm", "Vida útil": "50,000 hrs" }, featured: true
+    id: "p9", name: "Panel LED Slim 60x60 40W", slug: "panel-led-slim-60x60",
+    description: "Panel LED slim de empotrar y suspender para plafón, luz blanca fría/cálida seleccionable. Diseño ultra delgado para oficinas, comercios y hospitales. Driver integrado, vida útil de 50,000 horas. Disponible en formato cuadrado y rectangular.",
+    price: 459, comparePrice: 620, category: "iluminacion", subcategory: "paneles", brand: "Tecnolite", sku: "TEC-PNLSLIM-6060",
+    stock: 90, images: ["/productos/iluminacion-3.jpg"], specs: { "Potencia": "40W", "Lumens": "3600 lm", "Temp. Color": "6500K / 3000K", "Medidas": "60x60 cm", "Vida útil": "50,000 hrs", "Montaje": "Empotrar / Suspender" }, featured: true
   },
   {
     id: "p10", name: "Reflector LED 100W", slug: "reflector-led-100w",
@@ -131,10 +131,10 @@ export const products: Product[] = [
 
   // --- CANALIZACIÓN ---
   {
-    id: "p16", name: "Tubo Conduit PVC 3/4\" (3m)", slug: "tubo-conduit-pvc-34",
-    description: "Tubo conduit de PVC pesado de 3/4\" para canalización eléctrica empotrada. Resistente al impacto, autoextinguible. Tramo de 3 metros.",
-    price: 45, category: "canalizacion", subcategory: "conduit-pvc", brand: "Duraline", sku: "DRL-CPVC34-3M",
-    stock: 500, images: ["/productos/tubo-conduit-pvc.jpg"], specs: { "Diámetro": "3/4\"", "Longitud": "3 m", "Material": "PVC pesado", "Tipo": "Tipo A" }
+    id: "p16", name: "Tubo Corrugado Poliflex 3/4\"", slug: "tubo-corrugado-poliflex-34",
+    description: "Tubo corrugado flexible Poliflex de polietileno de alta densidad. Ideal para canalización eléctrica en muros y losas. Flexible, ligero y resistente al aplastamiento. Rollo de 50 metros.",
+    price: 185, comparePrice: 230, category: "canalizacion", subcategory: "corrugado", brand: "Poliflex", sku: "PLF-CORR34-50M",
+    stock: 200, images: ["/productos/tuberia-2.jpg"], specs: { "Diámetro": "3/4\"", "Longitud": "50 m", "Material": "PEAD", "Color": "Negro", "Norma": "NMX-E-013" }, featured: true
   },
   {
     id: "p17", name: "Tubo Conduit Galvanizado 1\" (3m)", slug: "tubo-conduit-galvanizado-1",
@@ -149,10 +149,10 @@ export const products: Product[] = [
     stock: 400, images: ["/productos/canaleta-plastica.jpg"], specs: { "Medidas": "20x12 mm", "Longitud": "2 m", "Material": "PVC", "Color": "Blanco" }
   },
   {
-    id: "p19", name: "Charola Tipo Escalera 30cm (3m)", slug: "charola-escalera-30cm",
-    description: "Charola portacable tipo escalera de 30cm de ancho en acero galvanizado. Para instalaciones industriales con gran volumen de cables.",
-    price: 890, category: "canalizacion", subcategory: "charolas", brand: "Charofil", sku: "CHR-ESC30-3M",
-    stock: 25, images: ["/productos/charola-escalera.jpg"], specs: { "Ancho": "30 cm", "Longitud": "3 m", "Material": "Acero galvanizado", "Carga": "50 kg/m" }
+    id: "p19", name: "Charola Porta Cable Tipo Escalera 30cm", slug: "charola-porta-cable-escalera",
+    description: "Charola portacable tipo escalera de 30cm en acero galvanizado por inmersión en caliente. Para naves industriales, plantas y centros de datos con gran volumen de cables. Alta capacidad de carga y ventilación natural.",
+    price: 950, category: "canalizacion", subcategory: "charolas", brand: "Charofil", sku: "CHR-ESC30-3M",
+    stock: 25, images: ["/productos/tuberia-3.jpg"], specs: { "Ancho": "30 cm", "Longitud": "3 m", "Material": "Acero galvanizado", "Carga": "50 kg/m", "Acabado": "Galvanizado en caliente" }, featured: true
   },
   {
     id: "p20", name: "Curva Conduit PVC 3/4\"", slug: "curva-conduit-pvc-34",
