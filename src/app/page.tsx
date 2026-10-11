@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Zap, Lightbulb, Shield, Wrench, ArrowRight, Truck, HeadphonesIcon, CreditCard, Award, ChevronRight, PipetteIcon, ToggleLeft } from "lucide-react";
+import { Zap, Lightbulb, Shield, Wrench, ArrowRight, Truck, HeadphonesIcon, CreditCard, Award, ChevronRight, PipetteIcon, ToggleLeft, Cable, PiggyBank, Cylinder } from "lucide-react";
 import { getFeaturedProducts, categories } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
@@ -9,8 +9,26 @@ const categoryIcons: Record<string, React.ElementType> = {
 };
 
 const brands = [
-  "Schneider Electric", "Condumex", "Philips", "Leviton", "Tecnolite",
-  "Klein Tools", "3M", "ABB", "Panduit", "Viakon", "Dexson", "Charofil",
+  { name: "Schneider Electric", logo: "/marcas/schneider-electric.svg" },
+  { name: "Simon", logo: "/marcas/simon.png" },
+  { name: "Tecnolite", logo: "/marcas/tecnolite.png" },
+  { name: "Condumex", logo: "/marcas/condumex.svg" },
+  { name: "Philips", logo: "/marcas/philips.svg" },
+  { name: "Leviton", logo: "/marcas/leviton.svg" },
+  { name: "Klein Tools", logo: "/marcas/klein-tools.png" },
+  { name: "3M", logo: "/marcas/3m.svg" },
+  { name: "ABB", logo: "/marcas/abb.svg" },
+  { name: "Panduit", logo: "/marcas/panduit.svg" },
+  { name: "Viakon", logo: "/marcas/viakon.svg" },
+  { name: "Dexson", logo: "/marcas/dexson.png" },
+  { name: "Charofil", logo: "/marcas/charofil.png" },
+];
+
+const calculatorTeasers = [
+  { icon: Cable, title: "Calibre de cable", desc: "Calibre y protección según carga y distancia" },
+  { icon: Lightbulb, title: "Iluminación", desc: "Luminarias que necesita cada espacio" },
+  { icon: PiggyBank, title: "Ahorro con LED", desc: "Cuánto baja tu recibo de luz" },
+  { icon: Cylinder, title: "Tubo conduit", desc: "Diámetro de tubería para tus cables" },
 ];
 
 export default function HomePage() {
@@ -166,15 +184,47 @@ export default function HomePage() {
       {/* Brands */}
       <section className="max-w-7xl mx-auto px-4 py-12">
         <h2 className="text-center text-lg font-bold text-dark mb-6">Marcas que distribuimos</h2>
-        <div className="flex flex-wrap items-center justify-center gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3">
           {brands.map((brand) => (
-            <div
-              key={brand}
-              className="px-5 py-2.5 bg-gray-50 rounded-xl text-sm font-medium text-gray-500 hover:text-brand hover:bg-brand-50 transition-colors border border-gray-100"
+            <Link
+              key={brand.name}
+              href={`/productos?q=${encodeURIComponent(brand.name)}`}
+              title={brand.name}
+              className="h-20 px-4 flex items-center justify-center bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-md transition-all"
             >
-              {brand}
-            </div>
+              <img src={brand.logo} alt={brand.name} loading="lazy" className="max-h-9 max-w-full w-auto object-contain" />
+            </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Calculators */}
+      <section className="bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6 gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-dark">Calculadoras eléctricas</h2>
+              <p className="text-sm text-gray-500 mt-1">Dimensiona tu instalación antes de comprar</p>
+            </div>
+            <Link href="/calculadoras" className="text-sm text-brand font-medium hover:underline flex items-center gap-1 shrink-0">
+              Ver todas <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {calculatorTeasers.map(({ icon: Icon, title, desc }) => (
+              <Link
+                key={title}
+                href="/calculadoras"
+                className="group p-4 bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-md transition-all"
+              >
+                <div className="w-10 h-10 bg-brand/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-brand transition-colors">
+                  <Icon className="w-5 h-5 text-brand group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="text-sm font-semibold text-dark">{title}</h3>
+                <p className="text-xs text-gray-500 mt-1">{desc}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

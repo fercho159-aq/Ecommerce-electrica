@@ -1,4 +1,5 @@
 import catalog from "./catalog.generated.json";
+import { whatsappUrl } from "@/lib/contact";
 
 export interface Product {
   id: string;
@@ -332,11 +333,9 @@ export function getVariants(product: Product): Product[] {
   return products.filter((p) => p.variantGroup === product.variantGroup);
 }
 
-export const WHATSAPP_NUMBER = "5255372496222";
-
 export function getQuoteUrl(product: Product, quantity = 1): string {
   const text = `Hola, quiero cotizar ${quantity} pza de: ${product.name} (${product.brand}, SKU ${product.sku})`;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  return whatsappUrl(text);
 }
 
 export function formatPrice(price: number): string {

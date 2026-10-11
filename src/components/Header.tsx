@@ -6,7 +6,7 @@ import { useCart } from "@/store/cart";
 import { formatPrice } from "@/data/products";
 import {
   ShoppingCart, Menu, X, Search, Phone, ChevronDown,
-  Zap, Lightbulb, PipetteIcon, ToggleLeft, Shield, Wrench, FileText, Mail, Home
+  Zap, Lightbulb, PipetteIcon, ToggleLeft, Shield, Wrench, FileText, Mail, Home, Calculator
 } from "lucide-react";
 
 const navLinks = [
@@ -22,6 +22,7 @@ const navLinks = [
       { href: "/productos?cat=herramientas", label: "Herramientas", icon: Wrench },
     ],
   },
+  { href: "/calculadoras", label: "Calculadoras", icon: Calculator },
   { href: "/catalogos", label: "Catálogos", icon: FileText },
   { href: "/blog", label: "Blog", icon: Mail },
   { href: "/contacto", label: "Contacto", icon: Phone },
