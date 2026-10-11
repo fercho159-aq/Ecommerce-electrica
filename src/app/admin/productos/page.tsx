@@ -227,7 +227,7 @@ export default function AdminProductosPage() {
                   </td>
                   <td className="px-4 py-3 text-gray-500 font-mono text-xs">{p.sku}</td>
                   <td className="px-4 py-3">
-                    <span className="font-semibold">{formatPrice(p.price)}</span>
+                    <span className="font-semibold">{p.quoteOnly ? "Cotizar" : formatPrice(p.price)}</span>
                     {p.comparePrice && <span className="block text-[10px] text-gray-400 line-through">{formatPrice(p.comparePrice)}</span>}
                   </td>
                   <td className="px-4 py-3">

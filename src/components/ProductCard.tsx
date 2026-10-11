@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Zap, Tag } from "lucide-react";
-import { Product, formatPrice } from "@/data/products";
+import { ShoppingCart, Zap, Tag, MessageCircle } from "lucide-react";
+import { Product, formatPrice, getQuoteUrl } from "@/data/products";
 import { useCart } from "@/store/cart";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -24,6 +24,11 @@ export default function ProductCard({ product }: { product: Product }) {
     });
   };
 
+  const handleQuote = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open(getQuoteUrl(product), "_blank", "noopener");
+  };
+
   return (
     <Link
       href={`/producto/${product.slug}`}
@@ -31,8 +36,8 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       {/* Image area */}
       <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-6 overflow-hidden">
-        {product.images[0] && product.images[0].startsWith("/productos/") ? (
-          <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
+        {product.images[0] ? (
+          <img src={product.images[0]} alt={product.name} loading="lazy" className="w-full h-full object-contain" />
         ) : (
           <Zap className="w-16 h-16 text-gray-200 group-hover:text-brand/20 transition-colors" />
         )}
@@ -65,29 +70,45 @@ export default function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-auto pt-3">
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-dark">{formatPrice(product.price)}</span>
+            {product.quoteOnly ? (
+              <span className="text-sm font-bold text-dark">Precio a cotizar</span>
+            ) : (
+              <span className="text-lg font-bold text-dark">{formatPrice(product.price)}</span>
+            )}
             {product.comparePrice && (
               <span className="text-xs text-gray-400 line-through">{formatPrice(product.comparePrice)}</span>
             )}
           </div>
 
-          <div className="flex items-center gap-2 mt-2.5">
-            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
-              product.stock > 0 ? "bg-green/10 text-green" : "bg-red-50 text-brand"
-            }`}>
-              {product.stock > 0 ? "En stock" : "Agotado"}
-            </span>
-            <span className="text-[10px] text-gray-400">SKU: {product.sku}</span>
+          <div className="flex items-center gap-2 mt-2.5 min-w-0">
+            {!product.quoteOnly && (
+              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                product.stock > 0 ? "bg-green/10 text-green" : "bg-red-50 text-brand"
+              }`}>
+                {product.stock > 0 ? "En stock" : "Agotado"}
+              </span>
+            )}
+            <span className="text-[10px] text-gray-400 truncate">SKU: {product.sku}</span>
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-            className="mt-3 w-full py-2.5 bg-brand text-white text-xs font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            Agregar al carrito
-          </button>
+          {product.quoteOnly ? (
+            <button
+              onClick={handleQuote}
+              className="mt-3 w-full py-2.5 bg-brand text-white text-xs font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-1.5"
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              Cotizar
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+              className="mt-3 w-full py-2.5 bg-brand text-white text-xs font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              Agregar al carrito
+            </button>
+          )}
         </div>
       </div>
     </Link>

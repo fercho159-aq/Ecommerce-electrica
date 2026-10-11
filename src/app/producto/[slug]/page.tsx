@@ -3,8 +3,8 @@
 import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ShoppingCart, Zap, Truck, Shield, RotateCcw, Minus, Plus, Heart } from "lucide-react";
-import { getProductBySlug, formatPrice, products, categories } from "@/data/products";
+import { ChevronRight, ShoppingCart, Zap, Truck, Shield, RotateCcw, Minus, Plus, Heart, MessageCircle } from "lucide-react";
+import { getProductBySlug, getVariants, getQuoteUrl, formatPrice, products, categories } from "@/data/products";
 import { useCart } from "@/store/cart";
 import ProductCard from "@/components/ProductCard";
 import { useState } from "react";
@@ -18,7 +18,11 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
   if (!product) notFound();
 
   const category = categories.find((c) => c.slug === product.category);
-  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const variants = getVariants(product);
+  const related = products
+    .filter((p) => p.category === product.category && p.id !== product.id && !variants.includes(p))
+    .sort((a, b) => Number(b.subcategory === product.subcategory) - Number(a.subcategory === product.subcategory))
+    .slice(0, 4);
   const discount = product.comparePrice ? Math.round((1 - product.price / product.comparePrice) * 100) : 0;
 
   const handleAddToCart = () => {
@@ -54,7 +58,7 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image */}
         <div className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative overflow-hidden">
-          {product.images[0] && product.images[0].startsWith("/productos/") ? (
+          {product.images[0] ? (
             <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain p-8" />
           ) : (
             <Zap className="w-32 h-32 text-gray-200" />
@@ -78,15 +82,25 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
 
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-gray-400">SKU: {product.sku}</span>
-            <span className="text-gray-300">|</span>
-            <span className={`text-xs font-medium px-2 py-0.5 rounded ${
-              product.stock > 0 ? "bg-green/10 text-green" : "bg-red-50 text-brand"
-            }`}>
-              {product.stock > 0 ? `En stock (${product.stock} disponibles)` : "Agotado"}
-            </span>
+            {!product.quoteOnly && (
+              <>
+                <span className="text-gray-300">|</span>
+                <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                  product.stock > 0 ? "bg-green/10 text-green" : "bg-red-50 text-brand"
+                }`}>
+                  {product.stock > 0 ? `En stock (${product.stock} disponibles)` : "Agotado"}
+                </span>
+              </>
+            )}
           </div>
 
           {/* Price */}
+          {product.quoteOnly ? (
+            <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+              <span className="text-xl font-bold text-dark">Precio a cotizar</span>
+              <p className="text-xs text-gray-400 mt-1">Te confirmamos precio y disponibilidad por WhatsApp</p>
+            </div>
+          ) : (
           <div className="mt-6 p-4 bg-gray-50 rounded-xl">
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-bold text-dark">{formatPrice(product.price)}</span>
@@ -99,6 +113,29 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
             </div>
             <p className="text-xs text-gray-400 mt-1">IVA incluido</p>
           </div>
+          )}
+
+          {/* Variants */}
+          {variants.length > 1 && (
+            <div className="mt-6">
+              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Color / acabado</h2>
+              <div className="flex flex-wrap gap-2">
+                {variants.map((v) => (
+                  <Link
+                    key={v.id}
+                    href={`/producto/${v.slug}`}
+                    className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
+                      v.id === product.id
+                        ? "border-brand bg-brand text-white font-medium"
+                        : "border-gray-200 text-gray-600 hover:border-brand hover:text-brand"
+                    }`}
+                  >
+                    {v.variantLabel}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <p className="mt-6 text-gray-600 text-sm leading-relaxed">{product.description}</p>
@@ -114,20 +151,32 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
               </button>
               <span className="w-12 text-center font-semibold">{quantity}</span>
               <button
-                onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                onClick={() => setQuantity(product.quoteOnly ? quantity + 1 : Math.min(product.stock, quantity + 1))}
                 className="p-3 hover:bg-gray-100 transition-colors"
               >
                 <Plus className="w-4 h-4" />
               </button>
             </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              className="flex-1 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Agregar al carrito
-            </button>
+            {product.quoteOnly ? (
+              <a
+                href={getQuoteUrl(product, quantity)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Cotizar por WhatsApp
+              </a>
+            ) : (
+              <button
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+                className="flex-1 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                Agregar al carrito
+              </button>
+            )}
             <button className="p-3 border border-gray-200 rounded-xl hover:border-brand hover:text-brand transition-colors">
               <Heart className="w-5 h-5" />
             </button>
@@ -154,7 +203,7 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
             <div className="border border-gray-100 rounded-xl overflow-hidden">
               {Object.entries(product.specs).map(([key, value], i) => (
                 <div key={key} className={`flex text-sm ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
-                  <span className="w-40 shrink-0 px-4 py-2.5 font-medium text-gray-600">{key}</span>
+                  <span className="w-32 sm:w-40 shrink-0 px-4 py-2.5 font-medium text-gray-600">{key}</span>
                   <span className="px-4 py-2.5 text-gray-800">{value}</span>
                 </div>
               ))}

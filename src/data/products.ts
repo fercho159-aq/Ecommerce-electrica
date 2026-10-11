@@ -1,3 +1,5 @@
+import catalog from "./catalog.generated.json";
+
 export interface Product {
   id: string;
   name: string;
@@ -14,6 +16,11 @@ export interface Product {
   specs: Record<string, string>;
   featured?: boolean;
   isNew?: boolean;
+  /** Sin precio de lista: se vende por cotización (WhatsApp), no por carrito. */
+  quoteOnly?: boolean;
+  /** Productos que son el mismo artículo en otro color/acabado. */
+  variantGroup?: string;
+  variantLabel?: string;
 }
 
 export interface Category {
@@ -25,7 +32,7 @@ export interface Category {
   productCount: number;
 }
 
-export const categories: Category[] = [
+const baseCategories: Category[] = [
   { id: "1", name: "Cables y Conductores", slug: "cables-conductores", description: "Cables THW, THHW, uso rudo, multiconductores y más", icon: "cable", productCount: 8 },
   { id: "2", name: "Iluminación", slug: "iluminacion", description: "LED, paneles, reflectores, luminarias industriales", icon: "lightbulb", productCount: 7 },
   { id: "3", name: "Canalización", slug: "canalizacion", description: "Tubería conduit, charolas, canaletas y ductos", icon: "pipe", productCount: 5 },
@@ -34,7 +41,7 @@ export const categories: Category[] = [
   { id: "6", name: "Herramientas", slug: "herramientas", description: "Pinzas, desarmadores, multímetros, cintas", icon: "wrench", productCount: 7 },
 ];
 
-export const products: Product[] = [
+const demoProducts: Product[] = [
   // --- CABLES Y CONDUCTORES ---
   {
     id: "p1", name: "Cable de Cobre Desnudo Kobrex", slug: "cable-cobre-desnudo-kobrex",
@@ -288,6 +295,14 @@ export const products: Product[] = [
   },
 ];
 
+// Catálogo de proveedores (Simon, Tecnolite) generado por scripts/import_catalog.py
+export const products: Product[] = [...demoProducts, ...(catalog as unknown as Product[])];
+
+export const categories: Category[] = baseCategories.map((c) => ({
+  ...c,
+  productCount: products.filter((p) => p.category === c.slug).length,
+}));
+
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find(p => p.slug === slug);
 }
@@ -308,6 +323,18 @@ export function searchProducts(query: string): Product[] {
     p.brand.toLowerCase().includes(q) ||
     p.sku.toLowerCase().includes(q)
   );
+}
+
+export function getVariants(product: Product): Product[] {
+  if (!product.variantGroup) return [];
+  return products.filter((p) => p.variantGroup === product.variantGroup);
+}
+
+export const WHATSAPP_NUMBER = "5255372496222";
+
+export function getQuoteUrl(product: Product, quantity = 1): string {
+  const text = `Hola, quiero cotizar ${quantity} pza de: ${product.name} (${product.brand}, SKU ${product.sku})`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
 export function formatPrice(price: number): string {

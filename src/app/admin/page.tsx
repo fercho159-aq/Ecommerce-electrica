@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function AdminDashboard() {
   const totalProducts = products.length;
   const totalValue = products.reduce((sum, p) => sum + p.price * p.stock, 0);
-  const lowStock = products.filter((p) => p.stock <= 10).length;
+  const lowStock = products.filter((p) => !p.quoteOnly && p.stock <= 10).length;
 
   const stats = [
     { label: "Productos", value: totalProducts.toString(), icon: Package, change: "+40", color: "bg-blue-500" },
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-500 font-mono text-xs">{p.sku}</td>
-                  <td className="px-4 py-3 font-semibold">{formatPrice(p.price)}</td>
+                  <td className="px-4 py-3 font-semibold">{p.quoteOnly ? "Cotizar" : formatPrice(p.price)}</td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 text-[10px] font-medium rounded-md ${
                       p.stock > 20 ? "bg-green/10 text-green" : p.stock > 0 ? "bg-orange/10 text-orange" : "bg-red-50 text-brand"

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Search, SlidersHorizontal, ChevronRight, X } from "lucide-react";
 import { products, categories, searchProducts, getProductsByCategory } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+
+const PAGE_SIZE = 24;
 
 export default function ProductosPage() {
   return (
@@ -24,6 +26,11 @@ function ProductosContent() {
   const [query, setQuery] = useState(initialQuery);
   const [sortBy, setSortBy] = useState("relevance");
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [selectedCategory, query, sortBy, selectedBrands]);
 
   const filteredProducts = useMemo(() => {
     let result = products;
@@ -40,8 +47,9 @@ function ProductosContent() {
     }
 
     switch (sortBy) {
-      case "price-asc": result = [...result].sort((a, b) => a.price - b.price); break;
-      case "price-desc": result = [...result].sort((a, b) => b.price - a.price); break;
+      // Los productos a cotizar no tienen precio: van siempre al final.
+      case "price-asc": result = [...result].sort((a, b) => Number(!!a.quoteOnly) - Number(!!b.quoteOnly) || a.price - b.price); break;
+      case "price-desc": result = [...result].sort((a, b) => Number(!!a.quoteOnly) - Number(!!b.quoteOnly) || b.price - a.price); break;
       case "name": result = [...result].sort((a, b) => a.name.localeCompare(b.name)); break;
     }
 
@@ -181,11 +189,23 @@ function ProductosContent() {
 
           {/* Grid */}
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredProducts.slice(0, visibleCount).map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+              {visibleCount < filteredProducts.length && (
+                <div className="mt-8 text-center">
+                  <button
+                    onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                    className="px-6 py-2.5 border border-gray-200 text-sm font-semibold text-dark rounded-xl hover:border-brand hover:text-brand transition-colors"
+                  >
+                    Ver más productos ({filteredProducts.length - visibleCount} restantes)
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-16">
               <p className="text-gray-400 text-lg">No se encontraron productos</p>
