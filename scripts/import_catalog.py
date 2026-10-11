@@ -33,7 +33,11 @@ OUT = ROOT / "src" / "data" / "catalog.generated.json"
 IMAGE_CACHE = Path(__file__).resolve().parent / "tecnolite-images.json"
 
 TECNOLITE_BUCKET = "https://tecnolite-product-images-167346965656.s3.us-east-1.amazonaws.com"
-TECNOLITE_IMAGE_SUFFIXES = ["-MAIN.jpg", "-PT02.jpg-Tecno1200Wx1200H"]
+TECNOLITE_IMAGE_SUFFIXES = [
+    "-MAIN.jpg", "-PT02.jpg-Tecno1200Wx1200H", "-PT01.jpg", "-MAIN.jpg-Tecno1200Wx1200H",
+    "-PT01.jpg-Tecno1200Wx1200H", "-NVO-MAIN.jpg-Tecno1200Wx1200H", "-NVO-PT02.jpg-Tecno1200Wx1200H",
+    "-PT02.jpg", "-PT02.JPG-Tecno1200Wx1200H", "-PT03.jpg-Tecno1200Wx1200H", "-PT03.jpg",
+]
 SIMON_IMAGE_HOSTS = ("https://cdn.pimber.ly/",)
 
 EMPTY = {"", "na", "n/a", "none", "por definir", "no definido", "sn", "no aplica", "-"}

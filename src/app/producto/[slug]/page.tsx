@@ -3,10 +3,11 @@
 import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ShoppingCart, Zap, Truck, Shield, RotateCcw, Minus, Plus, Heart, MessageCircle } from "lucide-react";
+import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Minus, Plus, Heart, MessageCircle } from "lucide-react";
 import { getProductBySlug, getVariants, getQuoteUrl, formatPrice, products, categories } from "@/data/products";
 import { useCart } from "@/store/cart";
 import ProductCard from "@/components/ProductCard";
+import ProductImage from "@/components/ProductImage";
 import { useState } from "react";
 
 export default function ProductoPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -58,11 +59,13 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image */}
         <div className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative overflow-hidden">
-          {product.images[0] ? (
-            <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain p-8" />
-          ) : (
-            <Zap className="w-32 h-32 text-gray-200" />
-          )}
+          <ProductImage
+            key={product.id}
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-contain p-8"
+            fallbackClassName="w-32 h-32 text-gray-200"
+          />
           {discount > 0 && (
             <span className="absolute top-4 left-4 px-3 py-1 bg-brand text-white text-sm font-bold rounded-lg">
               -{discount}%

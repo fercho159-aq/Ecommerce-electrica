@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, Zap, Tag, MessageCircle } from "lucide-react";
+import { ShoppingCart, Tag, MessageCircle } from "lucide-react";
 import { Product, formatPrice, getQuoteUrl } from "@/data/products";
 import { useCart } from "@/store/cart";
+import ProductImage from "@/components/ProductImage";
 
 export default function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
@@ -36,11 +37,12 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       {/* Image area */}
       <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-6 overflow-hidden">
-        {product.images[0] ? (
-          <img src={product.images[0]} alt={product.name} loading="lazy" className="w-full h-full object-contain" />
-        ) : (
-          <Zap className="w-16 h-16 text-gray-200 group-hover:text-brand/20 transition-colors" />
-        )}
+        <ProductImage
+          src={product.images[0]}
+          alt={product.name}
+          className="w-full h-full object-contain"
+          fallbackClassName="w-16 h-16 text-gray-200 group-hover:text-brand/20 transition-colors"
+        />
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {discount > 0 && (
