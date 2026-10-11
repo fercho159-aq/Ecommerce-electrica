@@ -33,6 +33,8 @@ OUT = ROOT / "src" / "data" / "catalog.generated.json"
 IMAGE_CACHE = Path(__file__).resolve().parent / "tecnolite-images.json"
 # Fotos elegidas a mano con scrape_images.py para productos sin imagen de proveedor.
 IMAGE_OVERRIDES = Path(__file__).resolve().parent / "image-overrides.json"
+# PNG con fondo transparente generados por remove_backgrounds.py; tienen prioridad.
+PNG_DIR = ROOT / "public" / "productos" / "catalogo"
 
 TECNOLITE_BUCKET = "https://tecnolite-product-images-167346965656.s3.us-east-1.amazonaws.com"
 TECNOLITE_IMAGE_SUFFIXES = [
@@ -467,6 +469,8 @@ def main():
     for product in products:
         if not product["images"] and product["id"] in overrides:
             product["images"] = [overrides[product["id"]]["image"]]
+        if (PNG_DIR / f"{product['id']}.png").exists():
+            product["images"] = [f"/productos/catalogo/{product['id']}.png"]
 
     slugs = [p["slug"] for p in products]
     if len(set(slugs)) != len(slugs):
