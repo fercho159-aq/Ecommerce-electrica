@@ -442,14 +442,19 @@ const panels: Record<ToolId, () => React.ReactNode> = {
   conduit: ConduitCalculator,
 };
 
-export default function Calculators() {
-  const [active, setActive] = useState<ToolId>("cable");
+/** `only` limita las calculadoras mostradas (p. ej. el par que va en la home). */
+export default function Calculators({ only }: { only?: ToolId[] }) {
+  const visible = only ? tools.filter((tool) => only.includes(tool.id)) : tools;
+  const [active, setActive] = useState<ToolId>(visible[0].id);
   const Panel = panels[active];
 
   return (
     <div>
-      <div role="tablist" className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-5">
-        {tools.map((tool) => {
+      <div
+        role="tablist"
+        className={`grid gap-2 mb-5 ${only ? "grid-cols-2 lg:max-w-xl" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"}`}
+      >
+        {visible.map((tool) => {
           const selected = tool.id === active;
           return (
             <button

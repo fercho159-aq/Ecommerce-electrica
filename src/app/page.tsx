@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Zap, Lightbulb, Shield, Wrench, ArrowRight, Truck, HeadphonesIcon, CreditCard, Award, ChevronRight, PipetteIcon, ToggleLeft, Cable, PiggyBank, Cylinder } from "lucide-react";
+import { Zap, Lightbulb, Shield, Wrench, ArrowRight, Truck, HeadphonesIcon, CreditCard, Award, ChevronRight, PipetteIcon, ToggleLeft, TrendingDown, Cylinder } from "lucide-react";
 import { getFeaturedProducts, categories } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import Calculators from "@/components/Calculators";
 
 const categoryIcons: Record<string, React.ElementType> = {
   cable: Zap, lightbulb: Lightbulb, pipe: PipetteIcon,
@@ -24,11 +25,10 @@ const brands = [
   { name: "Charofil", logo: "/marcas/charofil.png" },
 ];
 
-const calculatorTeasers = [
-  { icon: Cable, title: "Calibre de cable", desc: "Calibre y protección según carga y distancia" },
-  { icon: Lightbulb, title: "Iluminación", desc: "Luminarias que necesita cada espacio" },
-  { icon: PiggyBank, title: "Ahorro con LED", desc: "Cuánto baja tu recibo de luz" },
-  { icon: Cylinder, title: "Tubo conduit", desc: "Diámetro de tubería para tus cables" },
+const moreCalculators = [
+  { icon: TrendingDown, title: "Caída de tensión" },
+  { icon: Lightbulb, title: "Iluminación" },
+  { icon: Cylinder, title: "Tubo conduit" },
 ];
 
 export default function HomePage() {
@@ -210,18 +210,17 @@ export default function HomePage() {
               Ver todas <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {calculatorTeasers.map(({ icon: Icon, title, desc }) => (
+          <Calculators only={["cable", "ahorro"]} />
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-gray-500 mr-1">Más calculadoras:</span>
+            {moreCalculators.map(({ icon: Icon, title }) => (
               <Link
                 key={title}
                 href="/calculadoras"
-                className="group p-4 bg-white rounded-2xl border border-gray-100 hover:border-brand/20 hover:shadow-md transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-medium text-gray-600 hover:text-brand hover:border-brand/20 transition-colors"
               >
-                <div className="w-10 h-10 bg-brand/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-brand transition-colors">
-                  <Icon className="w-5 h-5 text-brand group-hover:text-white transition-colors" />
-                </div>
-                <h3 className="text-sm font-semibold text-dark">{title}</h3>
-                <p className="text-xs text-gray-500 mt-1">{desc}</p>
+                <Icon className="w-3.5 h-3.5" />
+                {title}
               </Link>
             ))}
           </div>
