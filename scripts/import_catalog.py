@@ -31,6 +31,8 @@ import openpyxl
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "src" / "data" / "catalog.generated.json"
 IMAGE_CACHE = Path(__file__).resolve().parent / "tecnolite-images.json"
+# Fotos elegidas a mano con scrape_images.py para productos sin imagen de proveedor.
+IMAGE_OVERRIDES = Path(__file__).resolve().parent / "image-overrides.json"
 
 TECNOLITE_BUCKET = "https://tecnolite-product-images-167346965656.s3.us-east-1.amazonaws.com"
 TECNOLITE_IMAGE_SUFFIXES = [
@@ -460,6 +462,11 @@ def main():
     tecnolite, skipped = build_tecnolite(args.tecnolite_full, args.tecnolite_top, args.probe_images)
     simon, simon_dupes = build_simon(args.simon)
     products = simon + tecnolite
+
+    overrides = json.loads(IMAGE_OVERRIDES.read_text()) if IMAGE_OVERRIDES.exists() else {}
+    for product in products:
+        if not product["images"] and product["id"] in overrides:
+            product["images"] = [overrides[product["id"]]["image"]]
 
     slugs = [p["slug"] for p in products]
     if len(set(slugs)) != len(slugs):

@@ -42,3 +42,6 @@ next-env.d.ts
 /catalogo/
 extract-images.mjs
 take-screenshots.mjs
+
+# candidatas de scripts/scrape_images.py (trabajo temporal)
+/.image-candidates/
