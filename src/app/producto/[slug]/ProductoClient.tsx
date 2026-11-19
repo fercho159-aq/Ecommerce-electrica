@@ -6,6 +6,7 @@ import { getQuoteUrl, type Product, type Category } from "@/data/products";
 import { useCart } from "@/store/cart";
 import ProductCard from "@/components/ProductCard";
 import ProductImage from "@/components/ProductImage";
+import { flyToCart } from "@/lib/flyToCart";
 import { useState } from "react";
 
 type Props = { product: Product; category?: Category; variants: Product[]; related: Product[] };
@@ -25,7 +26,7 @@ export default function ProductoClient({ product, category, variants, related }:
       brand: product.brand,
       sku: product.sku,
     }, quantity);
-    cart.setOpen(true);
+    flyToCart(document.querySelector("[data-product-image]")).then(() => cart.setOpen(true));
   };
 
   return (
@@ -47,7 +48,7 @@ export default function ProductoClient({ product, category, variants, related }:
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image */}
-        <div className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative overflow-hidden">
+        <div data-product-image className="bg-gray-50 rounded-2xl aspect-square flex items-center justify-center relative overflow-hidden">
           <ProductImage
             key={product.id}
             src={product.images[0]}

@@ -6,6 +6,7 @@ import { MessageCircle, Plus, Check } from "lucide-react";
 import { Product, getQuoteUrl } from "@/data/products";
 import { useCart } from "@/store/cart";
 import ProductImage from "@/components/ProductImage";
+import { flyToCart } from "@/lib/flyToCart";
 
 export default function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
@@ -23,6 +24,7 @@ export default function ProductCard({ product }: { product: Product }) {
       brand: product.brand,
       sku: product.sku,
     });
+    flyToCart((e.currentTarget as HTMLElement).closest("a"));
     setAdded(true);
     setTimeout(() => setAdded(false), 1200);
   };
@@ -65,9 +67,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="flex items-center gap-2 mt-3">
             <button
               onClick={handleQuote}
-              className="flex-1 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-1.5"
+              className="flex-1 min-w-0 px-2 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-1.5"
             >
-              <MessageCircle className="w-3.5 h-3.5" />
+              <MessageCircle className="hidden min-[400px]:block w-3.5 h-3.5 shrink-0" />
               Cotizar
             </button>
             <button

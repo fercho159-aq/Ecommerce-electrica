@@ -143,6 +143,7 @@ export default function Header() {
             <button
               onClick={() => cart.toggleCart()}
               aria-label="Cotización"
+              data-cart-target
               title="Cotización"
               className="relative p-2 text-gray-600 hover:text-brand hover:bg-brand-50 rounded-lg transition-colors"
             >

@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search, SlidersHorizontal, ChevronRight, X } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronRight, ChevronDown, X } from "lucide-react";
 import type { Product, Category } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
@@ -29,6 +29,7 @@ function ProductosContent({ products, categories }: Props) {
   const [sortBy, setSortBy] = useState("relevance");
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [brandsOpen, setBrandsOpen] = useState(false);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -80,7 +81,7 @@ function ProductosContent({ products, categories }: Props) {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar filters */}
         <aside className="lg:w-60 shrink-0">
-          <div className="sticky top-20 space-y-6">
+          <div className="lg:sticky lg:top-20 space-y-3 lg:space-y-6">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -95,12 +96,13 @@ function ProductosContent({ products, categories }: Props) {
 
             {/* Categories */}
             <div>
-              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorías</h3>
-              <div className="space-y-1">
+              <h3 className="hidden lg:block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorías</h3>
+              {/* Móvil: fila con scroll horizontal; escritorio: lista */}
+              <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 [scrollbar-width:none] lg:block lg:mx-0 lg:px-0 lg:pb-0 lg:space-y-1">
                 <button
                   onClick={() => setSelectedCategory("")}
-                  className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
-                    !selectedCategory ? "bg-brand text-white font-medium" : "text-gray-600 hover:bg-gray-100"
+                  className={`shrink-0 whitespace-nowrap rounded-full lg:rounded-lg lg:w-full text-left px-3.5 lg:px-3 py-2 text-sm transition-colors ${
+                    !selectedCategory ? "bg-brand text-white font-medium" : "bg-gray-100 lg:bg-transparent text-gray-600 hover:bg-gray-100"
                   }`}
                 >
                   Todas ({products.length})
@@ -109,8 +111,8 @@ function ProductosContent({ products, categories }: Props) {
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.slug)}
-                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
-                      selectedCategory === cat.slug ? "bg-brand text-white font-medium" : "text-gray-600 hover:bg-gray-100"
+                    className={`shrink-0 whitespace-nowrap rounded-full lg:rounded-lg lg:w-full text-left px-3.5 lg:px-3 py-2 text-sm transition-colors ${
+                      selectedCategory === cat.slug ? "bg-brand text-white font-medium" : "bg-gray-100 lg:bg-transparent text-gray-600 hover:bg-gray-100"
                     }`}
                   >
                     {cat.name} ({cat.productCount})
@@ -121,8 +123,16 @@ function ProductosContent({ products, categories }: Props) {
 
             {/* Brands */}
             <div>
-              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Marcas</h3>
-              <div className="space-y-1.5">
+              <button
+                onClick={() => setBrandsOpen(!brandsOpen)}
+                aria-expanded={brandsOpen}
+                className="lg:hidden w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-gray-700 border border-gray-200 rounded-xl"
+              >
+                <span>Filtrar por marca{selectedBrands.length > 0 && ` (${selectedBrands.length})`}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${brandsOpen ? "rotate-180" : ""}`} />
+              </button>
+              <h3 className="hidden lg:block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Marcas</h3>
+              <div className={`${brandsOpen ? "grid" : "hidden"} grid-cols-2 gap-x-3 gap-y-2.5 mt-3 px-1 lg:block lg:mt-0 lg:px-0 lg:space-y-1.5`}>
                 {availableBrands.map((brand) => (
                   <label key={brand} className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand">
                     <input
