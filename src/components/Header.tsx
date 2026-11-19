@@ -148,7 +148,7 @@ export default function Header() {
             >
               <ShoppingCart className="w-5 h-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-brand text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span key={itemCount} className="animate-bump absolute -top-0.5 -right-0.5 w-5 h-5 bg-brand text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
@@ -206,7 +206,7 @@ export default function Header() {
           onClick={() => cart.setOpen(true)}
           className="fixed bottom-24 right-4 md:bottom-auto md:right-0 md:top-1/2 md:-translate-y-1/2 z-40 bg-brand text-white text-sm font-semibold pl-4 pr-3 py-3 rounded-xl md:rounded-r-none shadow-lg hover:bg-brand-dark transition-colors flex items-center gap-2"
         >
-          <ShoppingCart className="w-4 h-4" />
+          <ShoppingCart key={itemCount} className="w-4 h-4 animate-bump" />
           Ver cotización ({itemCount})
         </button>
       )}

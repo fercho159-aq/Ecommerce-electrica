@@ -34,7 +34,7 @@ export interface Category {
   productCount: number;
 }
 
-const baseCategories: Category[] = [
+export const baseCategories: Category[] = [
   { id: "1", name: "Cables y Conductores", slug: "cables-conductores", description: "Cables THW, THHW, uso rudo, multiconductores y más", icon: "cable", productCount: 8 },
   { id: "2", name: "Iluminación", slug: "iluminacion", description: "LED, paneles, reflectores, luminarias industriales", icon: "lightbulb", productCount: 7 },
   { id: "3", name: "Canalización", slug: "canalizacion", description: "Tubería conduit, charolas, canaletas y ductos", icon: "pipe", productCount: 5 },

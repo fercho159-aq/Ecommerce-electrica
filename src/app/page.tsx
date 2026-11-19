@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Zap, Lightbulb, Shield, Wrench, ArrowRight, Truck, HeadphonesIcon, CreditCard, Award, ChevronRight, PipetteIcon, ToggleLeft, TrendingDown, Cylinder } from "lucide-react";
-import { getFeaturedProducts, categories } from "@/data/products";
+import { getFeaturedProducts, getCategories } from "@/lib/catalog";
 import ProductCard from "@/components/ProductCard";
 import Calculators from "@/components/Calculators";
 
@@ -31,8 +31,10 @@ const moreCalculators = [
   { icon: Cylinder, title: "Tubo conduit" },
 ];
 
-export default function HomePage() {
-  const featured = getFeaturedProducts();
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const [featured, categories] = await Promise.all([getFeaturedProducts(), getCategories()]);
 
   return (
     <>
