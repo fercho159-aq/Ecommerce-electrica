@@ -47,9 +47,6 @@ function ProductosContent() {
     }
 
     switch (sortBy) {
-      // Los productos a cotizar no tienen precio: van siempre al final.
-      case "price-asc": result = [...result].sort((a, b) => Number(!!a.quoteOnly) - Number(!!b.quoteOnly) || a.price - b.price); break;
-      case "price-desc": result = [...result].sort((a, b) => Number(!!a.quoteOnly) - Number(!!b.quoteOnly) || b.price - a.price); break;
       case "name": result = [...result].sort((a, b) => a.name.localeCompare(b.name)); break;
     }
 
@@ -156,8 +153,6 @@ function ProductosContent() {
                 className="text-sm border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand"
               >
                 <option value="relevance">Relevancia</option>
-                <option value="price-asc">Precio: menor a mayor</option>
-                <option value="price-desc">Precio: mayor a menor</option>
                 <option value="name">Nombre A-Z</option>
               </select>
             </div>

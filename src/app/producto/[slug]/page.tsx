@@ -3,8 +3,8 @@
 import { use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ShoppingCart, Truck, Shield, RotateCcw, Minus, Plus, Heart, MessageCircle } from "lucide-react";
-import { getProductBySlug, getVariants, getQuoteUrl, formatPrice, products, categories } from "@/data/products";
+import { ChevronRight, Shield, MessageCircle, Minus, Plus, Heart, ClipboardList } from "lucide-react";
+import { getProductBySlug, getVariants, getQuoteUrl, products, categories } from "@/data/products";
 import { useCart } from "@/store/cart";
 import ProductCard from "@/components/ProductCard";
 import ProductImage from "@/components/ProductImage";
@@ -24,7 +24,6 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
     .filter((p) => p.category === product.category && p.id !== product.id && !variants.includes(p))
     .sort((a, b) => Number(b.subcategory === product.subcategory) - Number(a.subcategory === product.subcategory))
     .slice(0, 4);
-  const discount = product.comparePrice ? Math.round((1 - product.price / product.comparePrice) * 100) : 0;
 
   const handleAddToCart = () => {
     cart.addItem({
@@ -66,11 +65,6 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
             className="w-full h-full object-contain p-8"
             fallbackClassName="w-32 h-32 text-gray-200"
           />
-          {discount > 0 && (
-            <span className="absolute top-4 left-4 px-3 py-1 bg-brand text-white text-sm font-bold rounded-lg">
-              -{discount}%
-            </span>
-          )}
           {product.isNew && (
             <span className="absolute top-4 right-4 px-3 py-1 bg-blue-600 text-white text-sm font-bold rounded-lg">
               NUEVO
@@ -85,38 +79,13 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
 
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-gray-400">SKU: {product.sku}</span>
-            {!product.quoteOnly && (
-              <>
-                <span className="text-gray-300">|</span>
-                <span className={`text-xs font-medium px-2 py-0.5 rounded ${
-                  product.stock > 0 ? "bg-green/10 text-green" : "bg-red-50 text-brand"
-                }`}>
-                  {product.stock > 0 ? `En stock (${product.stock} disponibles)` : "Agotado"}
-                </span>
-              </>
-            )}
           </div>
 
           {/* Price */}
-          {product.quoteOnly ? (
-            <div className="mt-6 p-4 bg-gray-50 rounded-xl">
-              <span className="text-xl font-bold text-dark">Precio a cotizar</span>
-              <p className="text-xs text-gray-400 mt-1">Te confirmamos precio y disponibilidad por WhatsApp</p>
-            </div>
-          ) : (
           <div className="mt-6 p-4 bg-gray-50 rounded-xl">
-            <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-dark">{formatPrice(product.price)}</span>
-              {product.comparePrice && (
-                <span className="text-lg text-gray-400 line-through">{formatPrice(product.comparePrice)}</span>
-              )}
-              {discount > 0 && (
-                <span className="text-sm font-semibold text-brand">Ahorras {formatPrice(product.comparePrice! - product.price)}</span>
-              )}
-            </div>
-            <p className="text-xs text-gray-400 mt-1">IVA incluido</p>
+            <span className="text-xl font-bold text-dark">Precio a cotizar</span>
+            <p className="text-xs text-gray-400 mt-1">Te confirmamos precio y disponibilidad por WhatsApp</p>
           </div>
-          )}
 
           {/* Variants */}
           {variants.length > 1 && (
@@ -144,7 +113,7 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
           <p className="mt-6 text-gray-600 text-sm leading-relaxed">{product.description}</p>
 
           {/* Quantity + Add to cart */}
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -154,43 +123,38 @@ export default function ProductoPage({ params }: { params: Promise<{ slug: strin
               </button>
               <span className="w-12 text-center font-semibold">{quantity}</span>
               <button
-                onClick={() => setQuantity(product.quoteOnly ? quantity + 1 : Math.min(product.stock, quantity + 1))}
+                onClick={() => setQuantity(quantity + 1)}
                 className="p-3 hover:bg-gray-100 transition-colors"
               >
                 <Plus className="w-4 h-4" />
               </button>
             </div>
-            {product.quoteOnly ? (
-              <a
-                href={getQuoteUrl(product, quantity)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Cotizar por WhatsApp
-              </a>
-            ) : (
-              <button
-                onClick={handleAddToCart}
-                disabled={product.stock === 0}
-                className="flex-1 py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                Agregar al carrito
-              </button>
-            )}
-            <button className="p-3 border border-gray-200 rounded-xl hover:border-brand hover:text-brand transition-colors">
+            <a
+              href={getQuoteUrl(product, quantity)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 min-w-[200px] py-3 bg-brand text-white font-semibold rounded-xl hover:bg-brand-dark transition-colors flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Cotizar por WhatsApp
+            </a>
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 min-w-[200px] py-3 border border-brand text-brand font-semibold rounded-xl hover:bg-brand hover:text-white transition-colors flex items-center justify-center gap-2"
+            >
+              <ClipboardList className="w-5 h-5" />
+              Agregar a cotización
+            </button>
+            <button aria-label="Favorito" className="p-3 border border-gray-200 rounded-xl hover:border-brand hover:text-brand transition-colors">
               <Heart className="w-5 h-5" />
             </button>
           </div>
 
           {/* Trust badges */}
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <div className="mt-6 grid grid-cols-2 gap-3">
             {[
-              { icon: Truck, title: "Envío gratis", desc: "Compras +$2,500" },
+              { icon: MessageCircle, title: "Cotización", desc: "Respuesta por WhatsApp" },
               { icon: Shield, title: "Garantía", desc: "De fábrica" },
-              { icon: RotateCcw, title: "Devoluciones", desc: "30 días" },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="text-center p-3 bg-gray-50 rounded-xl">
                 <Icon className="w-5 h-5 text-brand mx-auto mb-1" />

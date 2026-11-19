@@ -1,5 +1,6 @@
 import catalog from "./catalog.generated.json";
 import { whatsappUrl } from "@/lib/contact";
+import type { CartItem } from "@/store/cart";
 
 export interface Product {
   id: string;
@@ -336,6 +337,17 @@ export function getVariants(product: Product): Product[] {
 export function getQuoteUrl(product: Product, quantity = 1): string {
   const text = `Hola, quiero cotizar ${quantity} pza de: ${product.name} (${product.brand}, SKU ${product.sku})`;
   return whatsappUrl(text);
+}
+
+export function cartQuoteText(items: CartItem[]): string {
+  return (
+    "Hola, deseo cotizar los siguientes productos:\n\n" +
+    items.map((i) => `*${i.quantity} pza — ${i.name}*\nMarca: ${i.brand} · SKU: ${i.sku}\n`).join("\n")
+  );
+}
+
+export function getCartQuoteUrl(items: CartItem[]): string {
+  return whatsappUrl(cartQuoteText(items));
 }
 
 export function formatPrice(price: number): string {

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/store/cart";
-import { formatPrice } from "@/data/products";
+import { getCartQuoteUrl } from "@/data/products";
+import ProductImage from "@/components/ProductImage";
 import {
   ShoppingCart, Menu, X, Search, Phone, ChevronDown,
   Zap, Lightbulb, PipetteIcon, ToggleLeft, Shield, Wrench, FileText, Mail, Home, Calculator
@@ -33,7 +34,11 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const cart = useCart();
-  const itemCount = cart.totalItems();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  // persist hidrata desde localStorage: en SSR/primer render el conteo es 0
+  const itemCount = mounted ? cart.totalItems() : 0;
+  const items = mounted ? cart.items : [];
 
   return (
     <>
@@ -44,8 +49,6 @@ export default function Header() {
             <Phone className="w-3 h-3" />
             55 5539 6882
           </span>
-          <span className="hidden sm:inline text-gray-400">|</span>
-          <span className="hidden sm:inline">Envío gratis a partir de $2,500</span>
           <span className="hidden md:inline text-gray-400">|</span>
           <span className="hidden md:inline">Atención Lun-Vie 8:00-18:00, Sáb 9:00-14:00</span>
         </div>
@@ -139,6 +142,8 @@ export default function Header() {
             {/* Cart */}
             <button
               onClick={() => cart.toggleCart()}
+              aria-label="Cotización"
+              title="Cotización"
               className="relative p-2 text-gray-600 hover:text-brand hover:bg-brand-50 rounded-lg transition-colors"
             >
               <ShoppingCart className="w-5 h-5" />
@@ -195,47 +200,60 @@ export default function Header() {
         )}
       </header>
 
-      {/* Cart Drawer */}
+      {/* Botón flotante de cotización */}
+      {itemCount > 0 && !cart.isOpen && (
+        <button
+          onClick={() => cart.setOpen(true)}
+          className="fixed bottom-24 right-4 md:bottom-auto md:right-0 md:top-1/2 md:-translate-y-1/2 z-40 bg-brand text-white text-sm font-semibold pl-4 pr-3 py-3 rounded-xl md:rounded-r-none shadow-lg hover:bg-brand-dark transition-colors flex items-center gap-2"
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Ver cotización ({itemCount})
+        </button>
+      )}
+
+      {/* Lista de cotización */}
       {cart.isOpen && (
         <>
           <div className="fixed inset-0 bg-black/40 z-50" onClick={() => cart.setOpen(false)} />
           <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="font-bold text-lg">Carrito ({itemCount})</h2>
-              <button onClick={() => cart.setOpen(false)}><X className="w-5 h-5" /></button>
+              <h2 className="font-bold text-lg">Tu cotización ({itemCount})</h2>
+              <button onClick={() => cart.setOpen(false)} aria-label="Cerrar"><X className="w-5 h-5" /></button>
             </div>
             <div className="flex-1 overflow-y-auto p-4">
-              {cart.items.length === 0 ? (
+              {items.length === 0 ? (
                 <div className="text-center py-12 text-gray-400">
                   <ShoppingCart className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                  <p className="text-sm">Tu carrito está vacío</p>
+                  <p className="text-sm">Tu lista de cotización está vacía</p>
+                  <Link href="/productos" onClick={() => cart.setOpen(false)} className="inline-block mt-3 text-sm font-medium text-brand hover:underline">
+                    Ver productos
+                  </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {cart.items.map((item) => (
+                  {items.map((item) => (
                     <div key={item.id} className="flex gap-3 p-3 bg-gray-50 rounded-xl">
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg shrink-0 flex items-center justify-center">
-                        <Zap className="w-6 h-6 text-gray-400" />
+                      <div className="w-16 h-16 bg-white rounded-lg shrink-0 flex items-center justify-center overflow-hidden">
+                        <ProductImage src={item.image} alt={item.name} className="w-full h-full object-contain" fallbackClassName="w-6 h-6 text-gray-400" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{item.name}</p>
-                        <p className="text-xs text-gray-500">{item.brand}</p>
-                        <div className="flex items-center justify-between mt-1.5">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => cart.updateQuantity(item.id, item.quantity - 1)}
-                              className="w-6 h-6 rounded bg-gray-200 text-xs font-bold hover:bg-gray-300"
-                            >-</button>
-                            <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
-                            <button
-                              onClick={() => cart.updateQuantity(item.id, item.quantity + 1)}
-                              className="w-6 h-6 rounded bg-gray-200 text-xs font-bold hover:bg-gray-300"
-                            >+</button>
-                          </div>
-                          <span className="text-sm font-bold text-brand">{formatPrice(item.price * item.quantity)}</span>
+                        <p className="text-sm font-medium line-clamp-2">{item.name}</p>
+                        <p className="text-xs text-gray-500">{item.brand} · SKU {item.sku}</p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <button
+                            onClick={() => cart.updateQuantity(item.id, item.quantity - 1)}
+                            aria-label="Quitar uno"
+                            className="w-9 h-9 rounded bg-gray-200 text-sm font-bold hover:bg-gray-300"
+                          >-</button>
+                          <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => cart.updateQuantity(item.id, item.quantity + 1)}
+                            aria-label="Agregar uno"
+                            className="w-9 h-9 rounded bg-gray-200 text-sm font-bold hover:bg-gray-300"
+                          >+</button>
                         </div>
                       </div>
-                      <button onClick={() => cart.removeItem(item.id)} className="text-gray-400 hover:text-brand">
+                      <button onClick={() => cart.removeItem(item.id)} aria-label="Quitar" className="text-gray-400 hover:text-brand self-start p-1.5 -m-1.5">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
@@ -243,24 +261,27 @@ export default function Header() {
                 </div>
               )}
             </div>
-            {cart.items.length > 0 && (
-              <div className="border-t p-4 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-bold text-lg">{formatPrice(cart.totalPrice())}</span>
-                </div>
-                <Link
-                  href="/checkout"
-                  onClick={() => cart.setOpen(false)}
-                  className="block w-full py-3 bg-brand text-white text-center font-semibold rounded-xl hover:bg-brand-dark transition-colors"
+            {items.length > 0 && (
+              <div className="border-t p-4 space-y-2">
+                <a
+                  href={getCartQuoteUrl(items)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full py-3 bg-[#25D366] text-white text-center font-semibold rounded-xl hover:opacity-90 transition-opacity"
                 >
-                  Proceder al pago
-                </Link>
+                  Cotizar todo por WhatsApp
+                </a>
+                <button
+                  onClick={() => cart.setOpen(false)}
+                  className="w-full py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50"
+                >
+                  Seguir viendo
+                </button>
                 <button
                   onClick={() => cart.clearCart()}
-                  className="w-full py-2 text-sm text-gray-500 hover:text-brand transition-colors"
+                  className="w-full py-1.5 text-sm text-gray-500 hover:text-brand transition-colors"
                 >
-                  Vaciar carrito
+                  Vaciar lista
                 </button>
               </div>
             )}
