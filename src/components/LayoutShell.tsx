@@ -17,7 +17,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       <Header />
       <main className="flex-1">{children}</main>
       <a
-        href="https://wa.me/5255372496222?text=Hola,%20me%20interesa%20cotizar%20material%20eléctrico"
+        href="https://wa.me/525517896003?text=Hola,%20me%20interesa%20cotizar%20material%20eléctrico"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform"

@@ -90,7 +90,7 @@ export default function NosotrosPage() {
       {/* Branches */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {[
-          { name: "Sucursal Matriz — Iztapalapa", address: "Calz. Ermita Iztapalapa 111, El Prado, 09410, CDMX", phone: "55 5539 6882", wa: "55 3724 9622" },
+          { name: "Sucursal Matriz — Iztapalapa", address: "Calz. Ermita Iztapalapa 111, El Prado, 09410, CDMX", phone: "55 1789 6003", wa: "55 1789 6003" },
           { name: "Sucursal Tacuba", address: "Felipe Carrillo Puerto 370, Tacuba, CDMX", phone: "55 5386 0755", wa: "55 7070 5324" },
         ].map((branch) => (
           <div key={branch.name} className="bg-white rounded-2xl border border-gray-100 p-6">

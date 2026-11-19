@@ -91,7 +91,7 @@ export default function ContactoPage() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-brand shrink-0" />
-                <span>55 5539 6882</span>
+                <span>55 1789 6003</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-brand shrink-0" />
@@ -125,7 +125,7 @@ export default function ContactoPage() {
 
           {/* WhatsApp CTA */}
           <a
-            href="https://wa.me/5255372496222?text=Hola,%20necesito%20información"
+            href="https://wa.me/525517896003?text=Hola,%20necesito%20información"
             target="_blank"
             rel="noopener noreferrer"
             className="block bg-[#25D366] text-white rounded-2xl p-5 text-center hover:opacity-90 transition-opacity"

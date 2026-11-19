@@ -82,7 +82,7 @@ export default async function HomePage() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
-                href="https://wa.me/5255372496222?text=Hola,%20quiero%20cotizar%20material%20eléctrico"
+                href="https://wa.me/525517896003?text=Hola,%20quiero%20cotizar%20material%20eléctrico"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/10 backdrop-blur-sm"
@@ -240,7 +240,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-wrap justify-center gap-3 mt-6">
             <a
-              href="https://wa.me/5255372496222"
+              href="https://wa.me/525517896003"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-[#25D366] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"

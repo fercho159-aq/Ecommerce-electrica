@@ -47,7 +47,7 @@ export default function Header() {
         <div className="flex items-center justify-center gap-6 animate-pulse">
           <span className="flex items-center gap-1.5">
             <Phone className="w-3 h-3" />
-            55 5539 6882
+            55 1789 6003
           </span>
           <span className="hidden md:inline text-gray-400">|</span>
           <span className="hidden md:inline">Atención Lun-Vie 8:00-18:00, Sáb 9:00-14:00</span>
@@ -128,7 +128,7 @@ export default function Header() {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/5255372496222?text=Hola,%20me%20interesa%20cotizar%20material%20eléctrico"
+              href="https://wa.me/525517896003?text=Hola,%20me%20interesa%20cotizar%20material%20eléctrico"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-green text-white text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity"

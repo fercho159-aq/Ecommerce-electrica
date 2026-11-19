@@ -26,11 +26,11 @@ export default function AdminConfigPage() {
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Teléfono principal</label>
-            <input type="tel" defaultValue="55 5539 6882" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand" />
+            <input type="tel" defaultValue="55 1789 6003" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">WhatsApp</label>
-            <input type="tel" defaultValue="55 3724 9622" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand" />
+            <input type="tel" defaultValue="55 1789 6003" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand" />
           </div>
         </div>
       </div>
